@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:20:07 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/14 18:49:48 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:08:58 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,35 @@ long long	ft_atoi(const char *str)
 		i++;
 	}
 	return (res * minus);
+}
+
+size_t	get_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		printf("gettimeofday() fail\n");
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+int	waiter(size_t mtime)
+{
+	size_t	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < mtime)
+		usleep(500);
+	return (0);
+}
+
+void	destroyer(t_life life)
+{
+	int	i;
+
+	i = life.n_philos;
+	pthread_mutex_destroy(life.dead);
+	pthread_mutex_destroy(life.table);
+	while (--i >= 0)
+		pthread_mutex_destroy(life.philo[i].fork);
+	free(life.philo);
 }

@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:02:28 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/17 16:56:02 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/19 20:24:32 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ int	main(int arc, char **arv)
 	if (arc < 5 || arc > 6)
 		return (printf("Error : wrong number of arguments\n"), 0);
 	if (arg_checker(arc, arv))
-		return (0);
+		return (1);
 	if (!ft_init(life, arv, &ded))
-		return (0);
-	free(life.philo);
+		return (1);
+	living(&life);
+	destroyer(life);
 }
