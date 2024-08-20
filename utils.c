@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:20:07 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/19 19:08:58 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:05:12 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int	waiter(size_t mtime)
 {
 	size_t	start;
 
-	start = get_current_time();
-	while ((get_current_time() - start) < mtime)
+	start = get_time();
+	while ((get_time() - start) < mtime)
 		usleep(500);
 	return (0);
 }
@@ -76,8 +76,9 @@ void	destroyer(t_life life)
 	int	i;
 
 	i = life.n_philos;
-	pthread_mutex_destroy(life.dead);
+	pthread_mutex_destroy(life.die);
 	pthread_mutex_destroy(life.table);
+	pthread_mutex_destroy(life.write);
 	while (--i >= 0)
 		pthread_mutex_destroy(life.philo[i].fork);
 	free(life.philo);

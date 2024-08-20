@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:04:19 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/19 19:53:03 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:26:13 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <stdlib.h>
 
 typedef struct s_philo
 {
@@ -33,31 +34,37 @@ typedef struct s_philo
 	size_t				start_time;
 	pthread_mutex_t		*table;
 	pthread_mutex_t		*die;
-	pthread_mutex_t		*write
+	pthread_mutex_t		*write;
 }	t_philo;
 
 typedef struct s_life
 {
-	t_philo	*philo;
+	t_philo			*philo;
 	pthread_mutex_t	*table;
 	pthread_mutex_t	*die;
 	pthread_mutex_t	*write;
-	size_t	n_philos;
-	int		index;
+	int				n_philos;
+	int				ac;
+	int				index;
 }	t_life;
 
-int		ft_atoi(const char *str);
-int		ft_init(t_life life, char **arv, int *ded);
-void	ft_philo_init(t_philo phil, char **ar, int *ded_add, int id);
-size_t	get_time(void);
-int		waiter(size_t mtime);
-void	destroyer(t_life life);
-void	eat(t_life lif, int i);
-void	rest(t_philo phil);
-void	think(t_philo p);
-void	living(t_life *life);
-void	routine(t_life lif);
-void	printer(t_philo p, char *str);
-size_t	timer(t_philo p);
+long long	ft_atoi(const char *str);
+void		ft_init(t_life life, char **arv, int *ded, int ac);
+void		ft_philo_init(t_life life, char **ar, int *ded_add, int id);
+size_t		get_time(void);
+int			waiter(size_t mtime);
+void		destroyer(t_life life);
+void		eat(t_life lif, int i);
+void		rest(t_philo phil);
+void		think(t_philo p);
+void		living(t_life *life);
+void		*routine(void *life);
+void		printer(t_philo p, char *str);
+size_t		timer(t_philo p);
+int			is_he_dead(t_philo p);
+void		*observer(void *life);
+int			undertaker(t_philo p);
+int			are_full(t_life life);
+int			ft_isdigit(int c);
 
 #endif

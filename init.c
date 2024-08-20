@@ -6,27 +6,26 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:41:25 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/19 20:26:39 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:00:09 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_init(t_life life, char **arv, int *ded)
+void	ft_init(t_life life, char **arv, int *ded, int ac)
 {
 	int	i;
-	
+
 	life.n_philos = ft_atoi(arv[1]);
 	i = life.n_philos;
-	life.philo = malloc(sizeof(t_philo) * (i));
-	if (!life.philo)
-		return (printf("malloc fail\n"), 0);
+	life.ac = ac;
+	life.index = 0;
 	pthread_mutex_init(life.die, NULL);
 	pthread_mutex_init(life.table, NULL);
 	pthread_mutex_init(life.write, NULL);
 	while (--i >= 0)
 		ft_philo_init(life, arv, ded, i);
-	return (1);
+	return ;
 }
 
 void	ft_philo_init(t_life life, char **ar, int *ded_add, int i)
@@ -43,7 +42,9 @@ void	ft_philo_init(t_life life, char **ar, int *ded_add, int i)
 	life.philo[i].die = life.die;
 	life.philo[i].table = life. table;
 	life.philo[i].write = life.write;
-	if (ar[5])
+	if (life.ac == 6)
 		life.philo[i].meals_to_eat = ft_atoi(ar[5]);
+	else
+		life.philo[i].meals_to_eat = -1;
 	return ;
 }
