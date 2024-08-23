@@ -6,45 +6,48 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:25:58 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/20 15:28:10 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/23 20:32:35 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	living(t_life *life)
+int	living(t_life *life)
 {
 	int			i;
 	pthread_t	obs;
 
 	i = 0;
 	if (pthread_create(&obs, NULL, &observer, (void *)life) != 0)
-		destroyer(*life);
+		return (printf("pthread_create error\n"), destroyer(*life), 1);
 	while (i < life->n_philos)
 	{
-		if (pthread_create(&life->philo[i].thd, NULL, &routine, (void *)life) != 0)
-			destroyer(*life);
+		if (pthread_create(&life->philo[i].thd, NULL,
+				&routine, (void *)life) != 0)
+			return (printf("pthread_create error\n"), destroyer(*life), 1);
 		i++;
+		pthread_mutex_lock(&life->table);
 		life->index = i;
+		pthread_mutex_unlock(&life->table);
 	}
 	i = 0;
 	if (pthread_join(obs, NULL) != 0)
-		destroyer(*life);
+		return (printf("pthread_join error\n"), destroyer(*life), 1);
 	while (i < life->n_philos)
-	{
-		if (pthread_join(life->philo[i].thd, NULL) != 0)
-			destroyer(*life);
-		i++;
-	}
+		if (pthread_join(life->philo[i++].thd, NULL) != 0)
+			return (printf("pthread_join error\n"), destroyer(*life), 1);
+	return (0);
 }
 
 void	*routine(void *life)
 {
-	int	i;
+	int		i;
 	t_life	*lif;
 
 	lif = (t_life *)life;
+	pthread_mutex_lock(&lif->table);
 	i = lif->index;
+	pthread_mutex_unlock(&lif->table);
 	while (!is_he_dead(lif->philo[i]))
 	{
 		eat(*lif, i);
@@ -57,7 +60,8 @@ void	*routine(void *life)
 void	printer(t_philo p, char *str)
 {
 	pthread_mutex_lock(p.write);
-	printf("%d %d %s", (int)timer, p.id, str);
+	if (!is_he_dead(p))
+		printf("%zu %d %s", timer(p), p.id, str);
 	pthread_mutex_unlock(p.write);
 }
 

@@ -20,7 +20,7 @@ OBJS	= ${PHILO_SRC:.c=.o}
 
 # -----------------------------------Compilation------------------------------------
 
-CC		= cc #-g -fsanitize=address 
+CC		= cc -g -fsanitize=thread 
 
 FLAGS	= -Wall -Wextra -Werror
 

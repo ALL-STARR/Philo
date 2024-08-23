@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:20:07 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/20 15:05:12 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/23 21:01:17 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,20 @@ static int	spacer(char *str)
 	return (i);
 }
 
-long long	ft_atoi(const char *str)
+size_t	ft_atoi(const char *str)
 {
-	long long	i;
-	long long	res;
-	long long	minus;
-	long long	previous;
+	size_t	i;
+	size_t	res;
+	size_t	minus;
+	size_t	previous;
 
 	res = 0;
 	minus = 1;
 	i = spacer((char *)str);
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			minus *= -1;
-		i++;
-	}
 	while (str[i] && ft_isdigit(str[i]))
 	{
 		previous = res;
 		res = (res * 10) + (str[i] - 48);
-		if (previous > res && minus == 1)
-			return (-1);
-		if (previous > res && minus == -1)
-			return (0);
 		i++;
 	}
 	return (res * minus);
@@ -67,7 +57,7 @@ int	waiter(size_t mtime)
 
 	start = get_time();
 	while ((get_time() - start) < mtime)
-		usleep(500);
+		usleep(50);
 	return (0);
 }
 
@@ -76,10 +66,10 @@ void	destroyer(t_life life)
 	int	i;
 
 	i = life.n_philos;
-	pthread_mutex_destroy(life.die);
-	pthread_mutex_destroy(life.table);
-	pthread_mutex_destroy(life.write);
+	pthread_mutex_destroy(&life.die);
+	pthread_mutex_destroy(&life.table);
+	pthread_mutex_destroy(&life.write);
 	while (--i >= 0)
-		pthread_mutex_destroy(life.philo[i].fork);
+		pthread_mutex_destroy(&life.philo[i].fork);
 	free(life.philo);
 }

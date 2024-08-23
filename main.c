@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:02:28 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/20 15:04:01 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/08/23 22:16:01 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,18 @@ static int	arg_checker(int arc, char **array)
 		while (array[i][j])
 		{
 			if (array[i][j] < '0' || array[i][j++] > '9')
-				return (printf("please only write numbers\n"), 1);
+				return (printf("please only write unsigned numbers\n"), 1);
 		}
 		i++;
 	}
 	i = 1;
-	while (i < 6)
+	while (i < 5)
 	{
-		if (ft_atoi(array[i++]) < 1)
+		if (ft_atoi(array[i]) < 1)
 			return (printf("Error : first 4 args have to be >0\n"), 1);
+		i++;
 	}
-	if (arc == 6 && ft_atoi(array[i]) < 0)
+	if (arc == 6 && ft_atoi(array[5]) < 0)
 		return (printf("numbers of meals to eat has to be >= 0\n"), 1);
 	return (0);
 }
@@ -53,8 +54,9 @@ int	main(int arc, char **arv)
 		return (printf("Error : wrong number of arguments\n"), 0);
 	if (arg_checker(arc, arv))
 		return (1);
-	ft_init(life, arv, &ded, arc);
-	living(&life);
+	ft_init(&life, arv, &ded, arc);
+	if (living(&life))
+		return (1);
 	destroyer(life);
 }
 
