@@ -48,6 +48,8 @@ void	*routine(void *life)
 	pthread_mutex_lock(&lif->table);
 	i = lif->index;
 	pthread_mutex_unlock(&lif->table);
+	if (lif->philo[i].id % 2 == 0)
+		waiter(50);
 	while (!is_he_dead(lif->philo[i]))
 	{
 		eat(*lif, i);

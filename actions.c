@@ -28,10 +28,10 @@ void	eat(t_life lif, int i)
 	pthread_mutex_lock(&lif.philo[id % lif.n_philos].fork);
 	printer(lif.philo[i], "has taken a fork\n");
 	lif.philo[i].is_eating = 1;
+	lif.philo[i].last_m = get_time();
 	printer(lif.philo[i], "is eating\n");
 	waiter(lif.philo[0].t_to_eat);
 	pthread_mutex_lock(lif.philo[i].table);
-	lif.philo[i].last_m = get_time();
 	lif.philo[i].n_meals++;
 	pthread_mutex_unlock(lif.philo[i].table);
 	lif.philo[i].is_eating = 0;
