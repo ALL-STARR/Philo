@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 16:04:19 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/23 22:07:09 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:27:33 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_life
 	pthread_mutex_t	table;
 	pthread_mutex_t	die;
 	pthread_mutex_t	write;
+	int				go;
 	int				n_philos;
 	int				ac;
 	int				index;

@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 18:02:28 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/23 22:16:01 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:27:27 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int arc, char **arv)
 	int		ded;
 
 	life.n_philos = ft_atoi(arv[1]);
+	life.go = 0;
 	life.philo = malloc(sizeof(t_philo) * (life.n_philos));
 	if (!life.philo)
 		return (printf("malloc fail\n"), 0);

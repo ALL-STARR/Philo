@@ -6,7 +6,7 @@
 /*   By: thomvan- <thomvan-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:25:58 by thomvan-          #+#    #+#             */
-/*   Updated: 2024/08/23 20:32:35 by thomvan-         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:55:58 by thomvan-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	living(t_life *life)
 		life->index = i;
 		pthread_mutex_unlock(&life->table);
 	}
+	life->go = 0;
 	i = 0;
 	if (pthread_join(obs, NULL) != 0)
 		return (printf("pthread_join error\n"), destroyer(*life), 1);
@@ -47,6 +48,12 @@ void	*routine(void *life)
 	lif = (t_life *)life;
 	pthread_mutex_lock(&lif->table);
 	i = lif->index;
+	pthread_mutex_unlock(&lif->table);
+	while (lif->go)
+		waiter(10);
+	pthread_mutex_lock(&lif->table);
+	lif->philo[i].start_time = get_time();
+	lif->philo[i].last_m = get_time();
 	pthread_mutex_unlock(&lif->table);
 	if (lif->philo[i].id % 2 == 0)
 		waiter(50);
